@@ -1,5 +1,6 @@
 # AGENDA2
  SEMANA 7 AGENDA
+ Francis Fiallos
 Este proyecto tiene como objetivo la creación de un sistema básico de gestión de usuarios, que incluye registro, inicio de sesión, recuperación de contraseña y edición de perfil. A continuación, se describen los puntos principales implementados.
 
 Funcionalidades Principales
