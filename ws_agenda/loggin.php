@@ -39,7 +39,7 @@ switch ($post['accion']) {
         if ($query->num_rows > 0) {
             $row = $query->fetch_assoc();
             // Verificar la contraseña
-            if (password_verify($hashedPassword, $row['clave_persona'])) {
+            if ($hashedPassword == $row['clave_persona']) {
                 $data = $row;
                 $respuesta = ['code' => 200, 'response' => 'Login successful', 'estado' => true];
             } else {

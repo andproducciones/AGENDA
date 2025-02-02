@@ -53,7 +53,7 @@ switch ($post['accion']) {
             mysqli_real_escape_string($conn, $post['apellido_contacto']),
             mysqli_real_escape_string($conn, $post['telefono_contacto']),
             mysqli_real_escape_string($conn, $post['correo_contacto']),
-            mysqli_real_escape_string($conn, $post['codigo'])
+            mysqli_real_escape_string($conn, $post['cod_persona'])
         );
         $query = mysqli_query($conn, $sql);
 
@@ -69,7 +69,8 @@ switch ($post['accion']) {
             mysqli_real_escape_string($conn, $post['nombre_contacto']),
             mysqli_real_escape_string($conn, $post['apellido_contacto']),
             mysqli_real_escape_string($conn, $post['telefono_contacto']),
-            mysqli_real_escape_string($conn, $post['correo_contacto'])
+            mysqli_real_escape_string($conn, $post['correo_contacto']),
+            mysqli_real_escape_string($conn, $post['cod_contacto'])
         );
         $query = mysqli_query($conn, $sql);
 
@@ -81,7 +82,7 @@ switch ($post['accion']) {
     case 'eliminar':
         $sql = sprintf(
             "DELETE FROM contacto WHERE cod_contacto='%s'",
-            mysqli_real_escape_string($conn, $post['codigo_contacto'])
+            mysqli_real_escape_string($conn, $post['cod_contacto'])
         );
         $query = mysqli_query($conn, $sql);
 
