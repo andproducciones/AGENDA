@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  private API_URL = 'https://agenda.ioasystem.com/loggin.php'; // Cambia esto a la URL de tu backend
+  private API_URL = 'http://localhost/agenda/loggin.php'; // Cambia esto a la URL de tu backend
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +17,7 @@ export class LoginService {
       'Accept': 'application/json',
     });
 
-    return this.http.post(this.API_URL, { accion: 'login', email: email, password: password }, { headers });
+    return this.http.post(this.API_URL, { accion: 'login', email: email, password: password }, { headers:headers });
   }
 
 

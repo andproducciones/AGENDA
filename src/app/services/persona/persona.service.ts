@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PersonaService {
-  private API_URL = 'https://agenda.ioasystem.com/persona.php'; // Cambia esto a la URL de tu backend
+  private API_URL = 'http://localhost/agenda/persona.php'; // Cambia esto a la URL de tu backend
 
   constructor(private http: HttpClient) { }
 
