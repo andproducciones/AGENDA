@@ -41,6 +41,7 @@ export class CrearCuentaPage {
       correo: this.correo,
       clave: this.clave
     }).subscribe(async response => {
+      console.log(response);
       if (response.estado) {
         this.showAlert('Éxito', 'Cuenta creada exitosamente. Ahora inicia sesión.');
         this.router.navigate(['/login']);
@@ -48,7 +49,8 @@ export class CrearCuentaPage {
         this.showAlert('Error', response.response);
       }
     }, error => {
-      this.showAlert('Error', 'No se pudo conectar con el servidor.');
+      this.showAlert('Error', 'No se pudo conectar con el servidor1.');
+      console.error(error.error.text);
     });
   }
 
