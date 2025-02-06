@@ -46,6 +46,18 @@ switch ($post['accion']) {
         break;
 
     case 'insertar':
+
+        $telefono = mysqli_real_escape_string($conn, $post['telefono_contacto']);
+        $check_sql = "SELECT * FROM contacto WHERE telefono_contacto = '$telefono'";
+        $check_query = mysqli_query($conn, $check_sql);
+        $result = mysqli_num_rows($check_query);
+
+        if($result > 0){
+
+            $respuesta = ['code' => 409, 'response' => 'El número de teléfono ya está registrado', 'estado' => false];
+            //exit;
+        }else{
+
         $sql = sprintf(
             "INSERT INTO contacto (nom_contacto, ape_contacto, telefono_contacto, email_contacto, persona_cod_persona)
             VALUES ('%s', '%s', '%s', '%s', '%s')",
@@ -60,6 +72,8 @@ switch ($post['accion']) {
         $respuesta = $query
             ? ['code' => 200, 'response' => 'Data inserted successfully', 'estado' => true]
             : ['code' => 400, 'response' => 'Failed to insert data', 'estado' => false];
+
+        }
         break;
 
     case 'actualizar':

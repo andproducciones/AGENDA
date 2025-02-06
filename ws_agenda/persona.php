@@ -18,6 +18,7 @@ if (!isset($post['accion'])) {
     exit;
 }
 
+
 // Variables globales
 $respuesta = [];
 $data = [];
@@ -46,7 +47,7 @@ switch ($post['accion']) {
         break;
 
     case 'insertar':
-        $hashedPassword = password_hash($post['clave'], PASSWORD_DEFAULT);
+        //$hashedPassword = password_hash($post['clave'], PASSWORD_DEFAULT);
         $sql = sprintf(
             "INSERT INTO persona (nom_persona, ape_persona, ci_persona, correo_persona, clave_persona) 
             VALUES ('%s', '%s', '%s', '%s', '%s')",
@@ -54,7 +55,7 @@ switch ($post['accion']) {
             mysqli_real_escape_string($conn, $post['apellido']),
             mysqli_real_escape_string($conn, $post['cedula']),
             mysqli_real_escape_string($conn, $post['correo']),
-            mysqli_real_escape_string($conn, $hashedPassword)
+            mysqli_real_escape_string($conn, $post['clave'])
         );
         $query = mysqli_query($conn, $sql);
 
@@ -64,16 +65,18 @@ switch ($post['accion']) {
         break;
 
     case 'actualizar':
+        
+
         $sql = sprintf(
             "UPDATE persona 
             SET nom_persona='%s', ape_persona='%s', ci_persona='%s', correo_persona='%s', clave_persona='%s' 
             WHERE cod_persona='%s'",
-            mysqli_real_escape_string($conn, $post['nombre']),
-            mysqli_real_escape_string($conn, $post['apellido']),
-            mysqli_real_escape_string($conn, $post['cedula']),
-            mysqli_real_escape_string($conn, $post['correo']),
-            mysqli_real_escape_string($conn, $post['clave']),
-            mysqli_real_escape_string($conn, $post['codigo'])
+            mysqli_real_escape_string($conn, $post['nom_persona']),
+            mysqli_real_escape_string($conn, $post['ape_persona']),
+            mysqli_real_escape_string($conn, $post['ci_persona']),
+            mysqli_real_escape_string($conn, $post['correo_persona']),
+            mysqli_real_escape_string($conn, $post['clave_persona']),
+            mysqli_real_escape_string($conn, $post['cod_persona'])
         );
         $query = mysqli_query($conn, $sql);
 
@@ -157,8 +160,8 @@ switch ($post['accion']) {
             $to = $row['correo_persona'];
             $subject = "Recuperar password";
             $message = "Su contraseña es: " . $row['clave_persona'];
-            $headers = "From:info@ioasystem.com" . "\r\n" .
-                "CC:ivan.ancallay@gmail.com";
+            $headers = "From:info@agenda.com" . "\r\n" .
+                "CC:soporte@agenda.com";
             mail($to, $subject, $message, $headers);
             $respuesta = ['code' => 200, 'response' => 'Correo enviado', 'estado' => true];
         } else {
