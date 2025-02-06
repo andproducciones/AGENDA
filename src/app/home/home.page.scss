@@ -1,41 +1,47 @@
-/* Estilo general para el fondo amarillo */
+/* 🌟 Estilo general para la pantalla de bienvenida */
 .splash-page {
-  --background: #fff; /* Fondo amarillo (color inspirado en el logo) */
+  --background: #ffffff; /* Fondo blanco */
   display: flex;
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
   text-align: center;
   height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
-  overflow: hidden; /* Evita cualquier scroll */
-  margin: 0; /* Elimina márgenes */
-  padding: 0; /* Elimina padding */
+  overflow: hidden; /* Evita el scroll */
+  margin: 0;
+  padding: 0;
 }
 
-/* Contenedor principal */
+/* 📌 Contenedor principal */
 .splash-container {
   display: flex;
   flex-direction: column; /* Alinear verticalmente */
-  justify-content: center; /* Centrar contenido verticalmente */
-  align-items: center; /* Centrar contenido horizontalmente */
+  justify-content: center;
+  align-items: center;
   animation: fadeIn 2s ease-in-out;
   height: 100vh;
 }
 
-/* Estilo del logo */
+/* 🖼️ Estilo del logo */
 .logo {
-  width: 200px; /* Ajustar el tamaño del logo */
+  width: 200px; /* Tamaño ajustado del logo */
   height: auto; /* Mantener proporciones */
-  margin-bottom: 20px; /* Separación del texto */
+  margin-bottom: 20px;
+  animation: scaleUp 1.5s ease-in-out; /* Animación de escala */
 }
 
-/* Texto de carga */
-.splash-title {
-  font-size: 1.5rem; /* Tamaño de letra */
-  font-weight: bold;
-  color: #000; /* Color negro para contraste */
+/* 📌 Animación del logo */
+@keyframes scaleUp {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-/* Animación de entrada */
+/* 📌 Animación de entrada */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -43,4 +49,21 @@
   to {
     opacity: 1;
   }
+}
+
+/* 📝 Texto principal */
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4A90E2; /* Azul del tema */
+  margin-bottom: 5px;
+  animation: fadeIn 2.5s ease-in-out;
+}
+
+/* 📝 Subtítulo */
+h2 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 10px;
+  animation: fadeIn 3s ease-in-out;
 }

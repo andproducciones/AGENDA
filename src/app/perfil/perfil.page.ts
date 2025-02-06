@@ -38,15 +38,19 @@ export class PerfilPage implements OnInit {
 
   guardarCambios() {
     this.perfilService.actualizarPerfil(this.usuario).subscribe(async response => {
+      console.log(response);
       if (response.estado) {
         localStorage.setItem('userData', JSON.stringify(this.usuario));
         this.showAlert('Éxito', 'Tus datos han sido actualizados correctamente.');
-        window.location.reload();
+        //window.location.reload(); 
       } else {
         this.showAlert('Error', 'No se pudo actualizar la información.');
       }
     }, error => {
       this.showAlert('Error', 'No se pudo conectar con el servidor.');
+
+      console.log(error);
+      console.log(error.error.text);
     });
   }
 

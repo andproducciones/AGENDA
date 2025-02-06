@@ -1,4 +1,4 @@
-// Estilos generales para la página de login
+/* Estilos generales para la página de login */
 .login-page {
   --background: #f8f8f8;
   display: flex;
@@ -8,7 +8,7 @@
   height: 100vh;
 }
 
-// Contenedor principal del formulario
+/* Contenedor principal del formulario */
 .login-container {
   height: 90vh;
   width: 100%;
@@ -18,13 +18,13 @@
   justify-content: center;
 }
 
-// Logo de la aplicación
+/* Logo de la aplicación */
 .logo {
   width: 150px;
   margin: 20px auto;
 }
 
-// Título "Iniciar Sesión"
+/* Título "Iniciar Sesión" */
 .login-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -32,7 +32,7 @@
   color: #333;
 }
 
-// Tarjeta de Login
+/* Tarjeta de Login */
 ion-card {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
@@ -40,7 +40,7 @@ ion-card {
   padding: 15px;
 }
 
-// Inputs de usuario y contraseña
+/* Inputs de usuario y contraseña */
 ion-item {
   --background: transparent;
   --border-color: #ccc;
@@ -48,17 +48,17 @@ ion-item {
   border-radius: 5px;
 }
 
-// Botón "Ingresar"
+/* Botón "Ingresar" */
 .login-button {
   margin-top: 20px;
   font-size: 1.2rem;
   font-weight: bold;
-  --background: #180ad2;
+  --background: #4A90E2; /* Usando color azul del menú */
   --color: #fff;
   border-radius: 5px;
 }
 
-// Contenedor de botones adicionales (alineados horizontalmente)
+/* Contenedor de botones adicionales */
 .buttons-container {
   display: flex;
   justify-content: space-between;
@@ -66,25 +66,38 @@ ion-item {
   margin-top: 15px;
 }
 
-// Estilo para ambos botones alineados
-ion-button {
-  flex: 1;
-  text-align: center;
-}
-
-// Botón "Crear Cuenta" (verde)
+/* Botón "Crear Cuenta" (negro) */
 ion-button.crear-cuenta {
-  --background: #000000; // Verde
-  --background-hover: #45a049;
+  --background: #000000;
+  --background-hover: #333;
   --color: white;
   border-radius: 5px;
 }
 
-// Botón "Recuperar Contraseña" (con borde azul)
+/* Botón "Recuperar Contraseña" (con borde azul) */
 ion-button.recuperar-password {
-  --color: #180ad2;
+  --color: #4A90E2;
   --background: transparent;
-  --border-color: #180ad2;
-  border: 1px solid #180ad2;
+  --border-color: #4A90E2;
+  border: 1px solid #4A90E2;
   border-radius: 5px;
+}
+
+/* 🎨 Estilos importados del menú y ajustados para esta página */
+
+/* Iconos de los inputs */
+ion-icon {
+  color: #4A90E2;
+  font-size: 1.6rem;
+}
+
+/* Botón flotante (no se usa en login pero lo mantengo en caso de futuro uso) */
+ion-fab-button {
+  --box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Avatar (en caso de ser necesario en login) */
+ion-avatar {
+  background-color: #f3f3f3;
+  border-radius: 50%;
 }

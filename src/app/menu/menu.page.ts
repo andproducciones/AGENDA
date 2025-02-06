@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonicModule, ToastController } from '@ionic/angular';
+import { AlertController, IonicModule, ToastController, LoadingController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContactoService } from '../services/contacto/contacto.service';
@@ -19,12 +19,12 @@ export class MenuPage implements OnInit {
   constructor(
     private router: Router,
     private contactoService: ContactoService,
-    //private perfilService: PerfilService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController // Agregado para manejar el loader
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // Obtener datos del usuario desde la navegación o localStorage
     if (this.router.getCurrentNavigation()?.extras.state?.['userData']) {
       this.userData = this.router.getCurrentNavigation()?.extras.state?.['userData'];
@@ -34,27 +34,34 @@ export class MenuPage implements OnInit {
       if (storedUserData) {
         this.userData = JSON.parse(storedUserData);
         console.log('Datos del usuario desde localStorage:', this.userData);
-      }else{
+      } else {
         this.cerrarSesion();
       }
     }
 
-    this.cargarContactos();
+    await this.cargarContactos();
   }
 
-  cargarContactos() {
+  async cargarContactos() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando contactos...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
     this.contactoService.getContactos(this.userData.cod_persona).subscribe(
-      (response: any) => {
-        console.log('Respuesta del servidor:', response)
+      async (response: any) => {
         this.contactos = response.data;
+        await loading.dismiss();
       },
-      (error) => {
+      async (error) => {
+        await loading.dismiss();
         this.showAlert('Error', 'No se pudo cargar la lista de contactos.');
       }
     );
   }
 
-  abrirFormularioAgregar(idUser:any) {
+  abrirFormularioAgregar(idUser: any) {
     this.alertCtrl
       .create({
         header: 'Agregar Contacto',
@@ -69,7 +76,7 @@ export class MenuPage implements OnInit {
           {
             text: 'Guardar',
             handler: (data) => {
-              this.agregarContacto(data,idUser);
+              this.agregarContacto(data, idUser);
             },
           },
         ],
@@ -77,24 +84,34 @@ export class MenuPage implements OnInit {
       .then((alert) => alert.present());
   }
 
-  agregarContacto(data: any, idUser:any) {
-    console.log(data);
-    this.contactoService.addContacto(data,idUser).subscribe(
-      (response: any) => {
+  async agregarContacto(data: any, idUser: any) {
+    const loading = await this.loadingCtrl.create({
+      message: 'Guardando contacto...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    this.contactoService.addContacto(data, idUser).subscribe(
+      async (response: any) => {
+        await loading.dismiss();
+
         if (response.estado) {
           this.cargarContactos();
           this.showToast('Contacto agregado correctamente.');
+        } else if (response.code == 409) {
+          this.showAlert('Error', 'Número de teléfono repetido.');
         } else {
           this.showAlert('Error', 'No se pudo agregar el contacto.');
         }
       },
-      (error) => {
+      async (error) => {
+        await loading.dismiss();
         this.showAlert('Error', 'No se pudo conectar con el servidor.');
       }
     );
   }
 
-  editarContacto(cod_contacto:any,contacto: any) {
+  editarContacto(cod_contacto: any, contacto: any) {
     this.alertCtrl
       .create({
         header: 'Editar Contacto',
@@ -117,12 +134,17 @@ export class MenuPage implements OnInit {
       .then((alert) => alert.present());
   }
 
-  actualizarContacto(cod_contacto: any, data: any) {
-    console.log(data);
+  async actualizarContacto(cod_contacto: any, data: any) {
+    const loading = await this.loadingCtrl.create({
+      message: 'Actualizando contacto...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
     this.contactoService.updateContacto(cod_contacto, data).subscribe(
-      
-      (response: any) => {
-        console.log(response);
+      async (response: any) => {
+        await loading.dismiss();
+
         if (response.estado) {
           this.cargarContactos();
           this.showToast('Contacto actualizado correctamente.');
@@ -130,29 +152,57 @@ export class MenuPage implements OnInit {
           this.showAlert('Error', 'No se pudo actualizar el contacto.');
         }
       },
-      (error) => {
+      async (error) => {
+        await loading.dismiss();
         this.showAlert('Error', 'No se pudo conectar con el servidor.');
       }
     );
   }
 
-  eliminarContacto(cod_contacto: any) {
-    console.log(cod_contacto);
-    this.contactoService.deleteContacto(cod_contacto).subscribe(
-      (response: any) => {
-        console.log(response);
-        if (response.estado) {
-          this.cargarContactos();
-          this.showToast('Contacto eliminado correctamente.');
-        } else {
-          this.showAlert('Error', 'No se pudo eliminar el contacto.');
+  async eliminarContacto(cod_contacto: any) {
+    // Mostrar alerta de confirmación
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar este contacto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          handler: async () => {
+            // Proceder con la eliminación después de la confirmación
+            const loading = await this.loadingCtrl.create({
+              message: 'Eliminando contacto...',
+              spinner: 'crescent'
+            });
+            await loading.present();
+  
+            this.contactoService.deleteContacto(cod_contacto).subscribe(
+              async (response: any) => {
+                await loading.dismiss();
+  
+                if (response.estado) {
+                  this.cargarContactos();
+                  this.showToast('Contacto eliminado correctamente.');
+                } else {
+                  this.showAlert('Error', 'No se pudo eliminar el contacto.');
+                }
+              },
+              async (error) => {
+                await loading.dismiss();
+                this.showAlert('Error', 'No se pudo conectar con el servidor.');
+              }
+            );
+          }
         }
-      },
-      (error) => {
-        this.showAlert('Error', 'No se pudo conectar con el servidor.');
-      }
-    );
+      ]
+    });
+  
+    await alert.present();
   }
+  
 
   irContactos() {
     this.router.navigate(['/menu']);
@@ -186,5 +236,3 @@ export class MenuPage implements OnInit {
     await alert.present();
   }
 }
-
-
